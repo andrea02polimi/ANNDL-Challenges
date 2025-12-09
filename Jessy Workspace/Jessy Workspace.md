@@ -151,7 +151,86 @@ Multi-Instance Learning*
 - Top-K Pooling
 - Feature-Based Aggregation -- XGBoost
 
+---
+---
 
+# Even further
+
+- Replace Random Patch Selection With ROI-Driven Patch Extraction:
+
+    Random guided cropping is not enough. You must ensure **only diagnostic tissue** enters the pipeline.
+
+    Solution: 
+    - Implement “Largest Connected Tissue Component” patching
+        * Generate a tissue mask with Otsu + morphology (you already do this)
+        * Only extract patches from the largest tissue region
+        * Sample patches near *mask edges* + *mask center* (mimics pathologist behavior)
+
+- Switch from Average Pooling/Top-K to **Attention-Based MIL Aggregation**
+
+    Your pipeline becomes:
+
+    ```
+    Patch → CNN → 1024-d embedding → Attention MIL → Slide prediction
+    ```
+
+    Use the famous paper:
+
+    📄 “Attention-based Deep Multiple Instance Learning” — Ilse et al., 2018
+
+- Use **DINOv2 ViT-Small** or **Uni** Features (Self-Supervised): This is HUGE in H&E tasks.
+    * ImageNet models fail on microscopic texture.
+    * Histopathology ≈ texture classification, not object recognition.
+    - Self-supervised ViTs are texture monsters.
+
+- Reintroduce a Cleaner 4th Channel
+
+    Switch to: **Reinhard Stain Normalization + Optical Density**
+    - Simpler, stable, consistent.
+    - Add as:
+
+        ```
+        Channel 4 = OD intensity map
+        ```
+    - This gives the model:
+        * Nuclear density
+        * Tissue contrast
+        * Clean channel invariant to scanner color variation
+
+- Use 3-stage Training Schedule
+    - **Stage 1: Freeze backbone → train head** (You already do this)
+    - **Stage 2: Unfreeze last 50% of backbone**
+    - **Stage 3: Full fine-tuning with very low LR** (LR = 1e-6 or 5e-7) This is important for ViTs and ConvNeXt.
+
+- Increase Tile Diversity per Slide
+
+    Current: 4 patches
+    Better: 16 patches (but smaller batch size)
+
+    Use patch sizes:
+    * 256
+    * 384
+    * 512
+
+- Ensembling Multiple Backbones in Feature Space
+
+    Since MIL is downstream, you can simply:
+
+    ```
+    Embedding = concat([ConvNeXt, ResNet50, ViT-small])
+    → feed into MIL attention head
+    ```
+
+- Post-Training LightGBM Stack
+
+    So final pipeline can be:
+
+    ```
+    Patch → CNN → 1024-d → mean+max+variance → LightGBM → slide label
+    ```
+
+---
+---
 
 # Trying
 - No Regression, std: 
@@ -163,16 +242,16 @@ Multi-Instance Learning*
 
     Overall OOF F1 = 0.4057  ||  Tabular CV Avg F1 = 0.6794  || **LB F1 = 0.3485**
 
-    ![alt text](image.png) 
-    ![alt text](image-1.png) 
-    ![alt text](image-2.png)
+    ![alt text](images/image.png) 
+    ![alt text](images/image-1.png) 
+    ![alt text](images/image-2.png)
 
 - No-TIFF: 
 
     F1 val = 0.3729
 
-    ![alt text](image-3.png)
-    ![alt text](image-4.png)
+    ![alt text](images/image-3.png)
+    ![alt text](images/image-4.png)
 
     LB F1 = 0.2739
 - No-TIFF, Other models than ConvNeXt-Tiny:
@@ -195,10 +274,10 @@ Multi-Instance Learning*
 
         Robust CV Avg F1 = 0.7853
 
-        ![alt text](image-8.png)
-        ![alt text](image-9.png)
-        ![alt text](image-10.png)
-        ![alt text](image-12.png)
+        ![alt text](images/image-8.png)
+        ![alt text](images/image-9.png)
+        ![alt text](images/image-10.png)
+        ![alt text](images/image-12.png)
 
         LB F1 = 0.3135
     - ResNet50
@@ -207,12 +286,17 @@ Multi-Instance Learning*
 
         Robust CV Avg F1: 0.6133
 
-        ![alt text](image-5.png)
-        ![alt text](image-6.png)
-        ![alt text](image-11.png)
-        ![alt text](image-7.png)
+        ![alt text](images/image-5.png)
+        ![alt text](images/image-6.png)
+        ![alt text](images/image-11.png)
+        ![alt text](images/image-7.png)
 
         LB F1 = 0.3143
     - EfficientNetV2-S
 
         F1 val =
+
+
+- AB-MIL + ConvNeXt-Tiny:
+
+    F1 val = 
