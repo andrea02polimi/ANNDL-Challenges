@@ -134,9 +134,7 @@ These three steps solve 80% of your issues.
 
 
 # Paper
-*Detection of HER2 from Haematoxylin-Eosin Slides
-Through a Cascade of Deep Learning Classifiers via
-Multi-Instance Learning*
+*Detection of HER2 from Haematoxylin-Eosin Slides Through a Cascade of Deep Learning Classifiers via Multi-Instance Learning*
 
 1. Divide slide into tiles (512×512) — “divide et impera” strategy.
 2. Filter uninformative tiles (background or non-cancer).
@@ -229,6 +227,31 @@ Multi-Instance Learning*
     Patch → CNN → 1024-d → mean+max+variance → LightGBM → slide label
     ```
 
+
+---
+
+# Paper: 
+*CelloType: a unified model for segmentation and classification of tissue images*
+
+end-to-end transformer-based deep neural network (DNN) architecture with **multiple branches** to handle object detection, segmentation and classification concurrently.
+
+- Multitask learning strategy
+- Transformer-based deep learning
+- Multiplexed tissue images, Multiscale segmentation and classification 
+- DINO, MaskDINO, Mask R-CNN
+
+
+---
+
+
+# Paper:
+*Deep learning-based classification of breast cancer molecular subtypes from H&E whole-slide images*
+- H&E-stained WSIs could be leveraged to predict breast cancer molecular subtypes (luminal A, B, HER2-enriched, and Basal). 
+- Two-step pipeline: 
+    (1) classifying tumor and non-tumor tiles to use only the tumor regions for molecular subtyping; 
+    (2) employing a One-vs-Rest (OvR) strategy to train four binary OvR classifiers and aggregating their results using an eXtreme Gradient Boosting model. 
+- Supervised deep learning models could serve as supportive tools for molecular subtyping in breast cancer.
+
 ---
 ---
 
@@ -299,4 +322,52 @@ Multi-Instance Learning*
 
 - AB-MIL + ConvNeXt-Tiny:
 
-    F1 val = 
+    MIL CV Avg F1 = 0.8130  || **LB F1 = 0.3668**
+    ![alt text](images/image-13.png)
+    ![alt text](images/image-14.png)
+    ![alt text](images/image-15.png)
+
+- AB-MIL + ConvNeXt-Tiny + Data Saturation (Increase Patches) + 3-Stage Training:
+
+    Overall OOF F1 = 0.3765 || MIL CV Avg F1 = 0.8297
+    ![alt text](images/image-16.png)
+    ![alt text](images/image-17.png)
+
+
+- Hierarchical AB-MIL + ConvNeXt-Tiny vs Flat:
+
+    Overall OOF F1 = 0.3782  ||  Flat MIL CV OOF Macro F1 = 0.8075  ||  LB = 0.3536
+    ![alt text](images/image-18.png)
+    ![alt text](images/image-19.png)
+    + hierarchical: LB = 0.3582
+
+
+- Hybrid Ensemble Andrea+Jessy : LB=0.3537
+
+- Feature-Fusion Attention MIL, ConvNeXt (patch-level) + EfficientNet-B0 (slide-level): **LB = 0.3716**
+
+- Fusion + Hierarchy: LB = 0.3569
+
+
+- Meta-Ensemble: OOF F1 = 0.7976
+
+- Dual Stream B0: OOF Macro F1 = 0.3402  ||  LB F1 = 0.3309
+
+- FiLM-MIL: FiLM-MIL CV F1 = 0.7695
+
+
+
+
+Segmentation: downsampling -> upsampling -> conv2D+ReLU -> conv2D+ReLU
+
+Transpose Convolution
+
+U-Net
+
+CAMELYON16 
+
+FCNN
+
+Heatmap
+
+Not random patching
