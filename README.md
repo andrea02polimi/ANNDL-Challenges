@@ -1,5 +1,4 @@
 # Deep Learning Challenges
-## Deep Learning Challenges
 
 This repository contains the solutions for two deep learning classification challenges developed as part of a coursework assignment. Both tasks require designing and training neural networks **from scratch**, without using pretrained models or pretrained weights.
 
@@ -18,8 +17,6 @@ Key characteristics of the task:
 - Multiple input channels per time step
 - Goal: **sequence-level classification**
 - Output: one of **three classes**
-
----
 
 #### Constraints
 
