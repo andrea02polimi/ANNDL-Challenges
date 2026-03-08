@@ -3,23 +3,7 @@
 
 This repository contains the solutions for two deep learning classification challenges developed as part of a coursework assignment. Both tasks require designing and training neural networks **from scratch**, without using pretrained models or pretrained weights.
 
-### Challenge 1 — Histopathology Image Classification
-
-The first task focuses on image classification in the medical domain.  
-The dataset consists of images extracted from **low-magnification Whole Slide Images (WSI) of human tissue**.
-
-The objective is to build a deep learning model that can analyze each image and assign it to **one of four possible classes**, representing different **molecular subtypes associated with a potential disease in the tissue**.
-
-Key characteristics of the task:
-
-- Input: tissue image patches extracted from WSI
-- Goal: **multi-class image classification**
-- Output: one of **four molecular subtype classes**
-- Models must be **designed and trained from scratch**
-
----
-
-### Challenge 2 — Multivariate Time Series Classification
+### Challenge 1 — Multivariate Time Series Classification
 
 The second task focuses on **classification of multivariate time series data**.
 
@@ -37,7 +21,7 @@ Key characteristics of the task:
 
 ---
 
-### Constraints
+#### Constraints
 
 The assignment enforces the following important rule:
 
@@ -45,4 +29,20 @@ The assignment enforces the following important rule:
 - All architectures must be **implemented and trained from scratch**.
 - It is not allowed to rely on existing pretrained weights or pretrained backbone architectures.
 
-This repository therefore contains custom neural network architectures and training pipelines developed specifically for these two tasks.
+---
+
+### Challenge 2 — Histopathology Image Classification
+
+The first task focuses on image classification in the medical domain.  
+The dataset consists of images extracted from **low-magnification Whole Slide Images (WSI) of human tissue**.
+
+The objective is to build a deep learning model that can analyze each image and assign it to **one of four possible classes**, representing different **molecular subtypes associated with a potential disease in the tissue**.
+
+Key characteristics of the task:
+
+- Input: tissue image patches extracted from WSI
+- Goal: **multi-class image classification**
+- Output: one of **four molecular subtype classes**
+- Models must be **designed and trained from scratch**
+
+
