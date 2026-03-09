@@ -1,6 +1,6 @@
 # Deep Learning Challenges
 
-This repository contains the solutions for two deep learning classification challenges developed as part of a coursework assignment. Both tasks require designing and training neural networks **from scratch**, without using pretrained models or pretrained weights.
+This repository contains the solutions for two deep learning classification challenges developed as part of a coursework assignment. Both tasks require designing and training neural networks **from scratch**, without using pretrained models or pretrained weights (this holds only for the Challenge 1).
 
 ### Challenge 1 — Multivariate Time Series Classification
 
